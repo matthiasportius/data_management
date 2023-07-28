@@ -25,11 +25,6 @@ def add_to_zip(zip_path, in_path):
     # deletes all previous files in zip and does not add extra files, something with relpath?
 
 
-if __name__ == "__main__":           
-    in_path = r"C:\Users\User\Documents\test\test_compress"
-    compress_data(in_path)
-
-
 
 
 # for compress_data --> ZipFile also accepts compresslevel=<value from 0 to 9> with 9 having the best compression and 0 having no compression
