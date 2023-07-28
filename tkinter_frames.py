@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from to_zip import compress_data, add_to_zip
+from to_pdf import merge_pdfs
 
 
 
@@ -69,5 +70,22 @@ class ZipFrame:
 
 
 class PdfFrame:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, notebook) -> None:
+        self.mainframe = ttk.Frame(notebook, padding= (45, 30, 45, 15))
+        self.mainframe.grid(column=0, row=0)
+        self.populate_frame(notebook, self.mainframe)
+
+    def populate_frame(self, notebook, mainframe):
+        notebook.add(mainframe, text="Merge PDFs")
+        notebook.grid(column=0, row=0)
+
+        merge_label = ttk.Label(mainframe, text="Select the pdf files you want to merge.")
+        merge_label.grid(column=0, row=0)
+
+        merge_button = ttk.Button(mainframe, text="Merge", command=self.combine_pdf)
+        merge_button.grid(column=1, row=0, padx=(10,0))
+
+
+    def combine_pdf(self):
+        files = filedialog.askopenfilenames()
+        merge_pdfs(files)
