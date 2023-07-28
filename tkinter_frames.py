@@ -7,7 +7,7 @@ from to_zip import compress_data, add_to_zip
 
 
 class ZipFrame:
-    def __init__(self, notebook):
+    def __init__(self, notebook) -> None:
         self.mainframe = ttk.Frame(notebook, padding= (45, 30, 45, 15))
         self.mainframe.grid(column=0, row=0)        
         self.populate_frame(notebook, self.mainframe)
@@ -66,3 +66,8 @@ class ZipFrame:
         append_path = os.path.abspath(filename)
         add_to_zip(filepath, append_path)
         self.label_response["text"] = "Files succesfully added to zipfile."
+
+
+class PdfFrame:
+    def __init__(self) -> None:
+        pass

@@ -1,5 +1,8 @@
+import os
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
+from pypdf import PdfWriter
 
 from tkinter_frames import ZipFrame
 
@@ -16,15 +19,33 @@ root.rowconfigure(0, weight=1)
 ZipFrame(nb)
 
 
-
-
-
 # PDF stuff below
 pdf_frame = ttk.Frame(nb, padding= (45, 30, 45, 15))
 pdf_frame.grid(column=0, row=0)
 
 nb.add(pdf_frame, text="Merge PDFs")
 nb.grid(column=0, row=0)
+
+def merge_pdf():
+    files = filedialog.askopenfilenames()
+    merger = PdfWriter()
+    files_pdf = [file for file in files if file.endswith(".pdf")]
+    for pdf in files_pdf:
+        merger.append(pdf)
+    folder_path = os.path.split(files_pdf[0])[0]
+    merger.write(os.path.join(folder_path, "merged_pdf.pdf"))
+    merger.close()
+    # works, gives list:
+    # ('C:/Users/User/Documents/test/test_pdf/pdf1.pdf', 'C:/Users/User/Documents/test/test_pdf/pdf2.pdf', ...)
+
+merge_label = ttk.Label(pdf_frame, text="Select the pdf files you want to merge.")
+merge_label.grid(column=0, row=0)
+
+merge_button = ttk.Button(pdf_frame, text="Merge", command=merge_pdf)
+merge_button.grid(column=1, row=0, padx=(10,0))
+
+
+
 
 root.mainloop()
 
