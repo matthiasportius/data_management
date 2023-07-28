@@ -13,7 +13,7 @@ nb = ttk.Notebook(root)
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
-
+# put that into seperate .py file:
 class ZipFrame:
     def __init__(self):
         self.mainframe = ttk.Frame(nb, padding= (45, 30, 45, 15))
@@ -77,7 +77,7 @@ class ZipFrame:
         self.label_response["text"] = "Files succesfully added to zipfile."
 
 
-
+# generates frame:
 ZipFrame()
 
 
