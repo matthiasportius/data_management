@@ -8,7 +8,7 @@ from to_pdf import merge_pdfs
 
 
 class ZipFrame:
-    def __init__(self, notebook) -> None:
+    def __init__(self, notebook: ttk.Notebook) -> None:
         self.mainframe = ttk.Frame(notebook, padding= (45, 30, 45, 15))
         self.mainframe.grid(column=0, row=0)        
         self.populate_frame(notebook, self.mainframe)
@@ -16,7 +16,7 @@ class ZipFrame:
         self.label_response.grid(column=0, row=3, columnspan=3, pady=(10,0))
 
 
-    def populate_frame(self, notebook, mainframe):
+    def populate_frame(self, notebook: ttk.Notebook, mainframe):
         notebook.add(mainframe, text="Zip Data")
         notebook.grid(column=0, row=0)
 
@@ -34,6 +34,8 @@ class ZipFrame:
 
         button_compress = ttk.Button(mainframe, text="Compress", command=self.compress)
         button_compress.grid(column=2, row=0, padx=(10,0))
+        # make these buttons unselectable if no folder/file is selected first
+        # unselectable = default; if file: selectable
 
         button_select_zip = ttk.Button(mainframe, text="Select Zipfile", command=self.open_zipfile)
         button_select_zip.grid(column=1, row=2, padx=(10, 0))
@@ -51,31 +53,32 @@ class ZipFrame:
 
 
     def compress(self):
-        compress_data(filepath)
-        self.label_response["text"] = "Folder succesfully zipped."
+        compress_data(filepath)  # add option (button/selector etc.) to give integer value from 0-9 to compress_data (default: give no value / optional)
+        self.label_response["text"] = "Folder succesfully zipped." # if not aborted before, make if case for all cases/occurences
 
 
     def open_zipfile(self):
         filename = filedialog.askopenfilename()
         global filepath 
         filepath = os.path.abspath(filename)
+        # forgot to test for .zip extension, if its not a zip then print out fail message and dont allow add (make it not clickable)
         self.label_response["text"] = f"Zipfile {os.path.split(filepath)[1]} selected. Press Add to select you additions."
 
 
     def append_zip(self):
-        filename = filedialog.askopenfilename()
+        filename = filedialog.askopenfilename()  # add option to add folder with askdirectory
         append_path = os.path.abspath(filename)
         add_to_zip(filepath, append_path)
         self.label_response["text"] = "Files succesfully added to zipfile."
 
 
 class PdfFrame:
-    def __init__(self, notebook) -> None:
+    def __init__(self, notebook: ttk.Notebook) -> None:
         self.mainframe = ttk.Frame(notebook, padding= (45, 30, 45, 15))
         self.mainframe.grid(column=0, row=0)
         self.populate_frame(notebook, self.mainframe)
 
-    def populate_frame(self, notebook, mainframe):
+    def populate_frame(self, notebook: ttk.Notebook, mainframe):
         notebook.add(mainframe, text="Merge PDFs")
         notebook.grid(column=0, row=0)
 

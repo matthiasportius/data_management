@@ -2,32 +2,43 @@ import os
 import zipfile
 
 
-def compress_data(in_path):
+
+def compress_data(in_path: str | os.PathLike, compression_level: int = -1) -> None:
     out_path = os.path.splitext(in_path)[0] + ".zip"
-    with zipfile.ZipFile(out_path, 'w', zipfile.ZIP_DEFLATED) as zipf:  # deflate is most common method to zip, better use 'x' instead of 'w' as it exclusively creates and writes new file
-        for root, folder, files in os.walk(in_path):  # os.walk also goes to subfolder
-            for file in files:
-                file_path = os.path.join(root, file)
-                zipf.write(file_path, os.path.relpath(file_path, in_path))
+    try:
+        with zipfile.ZipFile(file=out_path, mode='w', compression=zipfile.ZIP_DEFLATED,
+                             compresslevel=compression_level, strict_timestamps=False) as zipf:  
+            for root, folder, files in os.walk(in_path): 
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    zipf.write(file_path, os.path.relpath(file_path, in_path))
+    except FileExistsError:
+        pass  # add sth like returning a phrase which is outputted by tkinter
 
 
-def add_to_zip(zip_path, in_path):
+def add_to_zip(zip_path: str | os.PathLike, add_path: str | os.PathLike) -> None:
     if zipfile.is_zipfile(zip_path):
         with zipfile.ZipFile(zip_path, 'a', zipfile.ZIP_DEFLATED) as zipf:
-            zipf.write(in_path, os.path.split(in_path)[1])
-# works not with single files, to do for folders, change following:
-            # for root, folder, files in os.walk(in_path):
-            #     # stops here, walk not for files?
-            #     print(3)
-            #     for file in files:
-            #         file_path = os.path.join(in_path, file)
-            #         zipf.write(file_path, os.path.relpath(file_path, in_path))
-    # deletes all previous files in zip and does not add extra files, something with relpath?
+            if os.path.isdir(add_path):
+                # works not with single files only folders
+                # "unpacks" files in the selected folder into zipfile
+                for root, folder, files in os.walk(add_path):
+                    for file in files:
+                        file_path = os.path.join(add_path, file)
+                        zipf.write(file_path, os.path.relpath(file_path, add_path))
+            else:
+                zipf.write(add_path, os.path.split(add_path)[1])
+    else:
+        pass  # add returning phrase: is not a zipfile
 
 
-
-
-# for compress_data --> ZipFile also accepts compresslevel=<value from 0 to 9> with 9 having the best compression and 0 having no compression
-
-# extract zipfiles:
-# zipfile.Zipfile.extractall(out_path)
+# test this and make button for it
+def extract_zip(zip_path):
+    if zipfile.is_zipfile(zip_path):
+        with zipfile.ZipFile(zip_path, 'r') as zipf:
+            zipf.extractall(path=os.path.split(zip_path)[0])
+    else:
+        pass  # add returning phrase: is no a zipfile
+# according to the docs, decompression has a lot of pitfalls 
+    # (incorrect zip format, usupported compression method, incorrect password, ...)
+    # later only allow for certain compression types, no passwords, specific zip format
