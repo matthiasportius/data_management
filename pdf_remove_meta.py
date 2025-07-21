@@ -1,3 +1,4 @@
+# TODO (not implemented yet)
 # meta data contains (private) info related to the file (title, author, keywords, ...)
 # it can be deleted to get "safe" pdfs
 

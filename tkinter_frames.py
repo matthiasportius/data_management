@@ -8,7 +8,7 @@ from to_pdf import merge_pdfs
 
 
 class ZipFrame:
-    def __init__(self, notebook) -> None:
+    def __init__(self, notebook: ttk.Notebook) -> None:
         self.zip_path = None
         self.folder_path = None
         self.compression_level = 6
@@ -20,7 +20,7 @@ class ZipFrame:
         self.label_response.grid(column=0, row=5, columnspan=3, pady=(10,0))
 
 
-    def populate_frame(self, notebook, mainframe):
+    def populate_frame(self, notebook: ttk.Notebook, mainframe):
         notebook.add(mainframe, text="Zip Data")
         notebook.grid(column=0, row=0)
 
@@ -38,6 +38,8 @@ class ZipFrame:
 
         button_compress = ttk.Button(mainframe, text="Compress", command=self.compress)
         button_compress.grid(column=2, row=0, padx=(10,0))
+        # make these buttons unselectable if no folder/file is selected first
+        # unselectable = default; if file: selectable
 
         button_select_zip = ttk.Button(mainframe, text="Select Zipfile", command=self.open_zipfile)
         button_select_zip.grid(column=1, row=2, padx=(10, 0))
@@ -102,12 +104,12 @@ class ZipFrame:
 
 
 class PdfFrame:
-    def __init__(self, notebook) -> None:
+    def __init__(self, notebook: ttk.Notebook) -> None:
         self.mainframe = ttk.Frame(notebook, padding= (45, 30, 45, 15))
         self.mainframe.grid(column=0, row=0)
         self.populate_frame(notebook, self.mainframe)
 
-    def populate_frame(self, notebook, mainframe):
+    def populate_frame(self, notebook: ttk.Notebook, mainframe):
         notebook.add(mainframe, text="Merge PDFs")
         notebook.grid(column=0, row=0)
 
