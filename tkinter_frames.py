@@ -38,8 +38,6 @@ class ZipFrame:
 
         button_compress = ttk.Button(mainframe, text="Compress", command=self.compress)
         button_compress.grid(column=2, row=0, padx=(10,0))
-        # make these buttons unselectable if no folder/file is selected first
-        # unselectable = default; if file: selectable
 
         button_select_zip = ttk.Button(mainframe, text="Select Zipfile", command=self.open_zipfile)
         button_select_zip.grid(column=1, row=2, padx=(10, 0))
@@ -66,11 +64,14 @@ class ZipFrame:
 
 
     def compress(self):
-        file_exists = compress_data(self.folder_path, self.compression_level)
-        if file_exists:
-            self.label_response["text"] = "ZIP file already exists."
-        else:    
-            self.label_response["text"] = "Folder succesfully zipped."
+        if not self.folder_path:
+            self.label_response["text"] = "No folder selected."
+        else:
+            file_exists = compress_data(self.folder_path, self.compression_level)
+            if file_exists:
+                self.label_response["text"] = "ZIP file already exists."
+            else:    
+                self.label_response["text"] = "Folder succesfully zipped."
 
 
     def open_zipfile(self):

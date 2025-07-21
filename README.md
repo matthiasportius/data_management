@@ -52,5 +52,7 @@ Following issues are addressed next:
 * show a progress bar
 * option to extract zipfiles (zipfile.Zipfile.extractall(out_path))?
 * add some error handling, e.g. when user closes dialogue windows before submitting etc. (often this just crashed program)
+* add typing to tkinter_frames
+* make buttons like compress unselectable if no folder was selected before (unselectable = default; if file: selectable)
 
-* next: 
+* next: test program (zip all test files, add both types, test compression level again, test if no files selected etc. and test pdf merger normal and also with no files selected)
