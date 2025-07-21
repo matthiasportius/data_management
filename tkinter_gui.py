@@ -6,6 +6,7 @@ from tkinter_frames import ZipFrame, PdfFrame
 
 
 root = tk.Tk()
+root.title("Data Manager")
 nb = ttk.Notebook(root)
 
 # for resizing the window:
