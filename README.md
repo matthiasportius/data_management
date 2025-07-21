@@ -10,37 +10,9 @@ ZIP (and similar algorithms like GZIP or DEFLATE):
 * are ineffective on data that’s already compressed (.jpg, .png, .mp3, .mp4, .zip)
 This is why compression of image files like .jpg or .png shows no change, even at compression level 9, since they are already compressed.
 
-
 ## Usage
 
 Run the tkinter_gui.py file and use the GUI for everything else.
-
-## Issues to address
-
-Following issues are addressed next:
-
-* First optimize the code on the "backend" and add the options that I wanted to add THEN optimize Tkinter and make it good-looking
-
-* There could be a superclass for the frames holding the `__init__`, since this should always be the same (response label to Pdf class needs to be added)
-* add option to insert pdf in existing one see [here](https://pypdf.readthedocs.io/en/stable/user/merging-pdfs.html)
-* add option to reduce size of existing pdf see [here](https://pypdf.readthedocs.io/en/stable/user/file-size.html)
-* add option to remove metadata of images to shrink them
-* make tkinter more beautiful
-* make it deployable / installable
-* bind certain keys with root.bind() for more functionality?
-* option to create new files and folder?
-* in create folder if action cancelled dont show anything (not it shows: folder data management selected)
-* prevent duplicate files in zip
-* handle overwrites gracefully
-* show a progress bar
-* add more failsafe tests:
-    * isdir option in to_zip and run that if true, ...
-* option to extract zipfiles (zipfile.Zipfile.extractall(out_path))?
-
-* next: 
-* add option to reduce size of existing pdf see [here](https://pypdf.readthedocs.io/en/stable/user/file-size.html)
-* add some error handling, e.g. when user closes dialogue windows before submitting etc. (often this just crashed program)
-
 
 #### combine_pdf
 
@@ -62,3 +34,26 @@ Compression level can be selected between integers of 0 to 9. 0 beeing no compre
 
 Adds a file or folder to an existing zip file. First checks if the given path is a valid zip file and if not returns an error message. If a folder should be added, `os.walk` goes over all the files in the folder and writes them to the zip archive. The files in the selected folder are unpacked into the zip file. For a single file, it is simply directly written to the archive.
 
+## Issues to address
+
+Following issues are addressed next:
+
+* There could be a superclass for the frames holding the `__init__`, since this should always be the same (response label to Pdf class needs to be added)
+* add option to insert pdf in existing one see [here](https://pypdf.readthedocs.io/en/stable/user/merging-pdfs.html)
+* add option to reduce size of existing pdf see [here](https://pypdf.readthedocs.io/en/stable/user/file-size.html)
+
+* add option to remove metadata of images to shrink them
+* make tkinter more beautiful
+* make it deployable / installable
+* bind certain keys with root.bind() for more functionality?
+* option to create new files and folder?
+* in create folder if action cancelled dont show anything (not it shows: folder data management selected)
+* prevent duplicate files in zip
+* handle overwrites gracefully
+* show a progress bar
+* add more failsafe tests:
+    * isdir option in to_zip and run that if true, ...
+* option to extract zipfiles (zipfile.Zipfile.extractall(out_path))?
+* add some error handling, e.g. when user closes dialogue windows before submitting etc. (often this just crashed program)
+
+* next: 

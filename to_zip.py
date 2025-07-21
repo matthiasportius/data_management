@@ -12,15 +12,15 @@ def compress_data(in_path: str | os.PathLike, compression_level: int = 0) -> Non
                 file_path = os.path.join(root, file)
                 zipf.write(file_path, os.path.relpath(file_path, in_path))
     # make this as one
-    try:
-        with zipfile.ZipFile(file=out_path, mode='w', compression=zipfile.ZIP_DEFLATED,
-                             compresslevel=compression_level, strict_timestamps=False) as zipf:  
-            for root, folder, files in os.walk(in_path): 
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    zipf.write(file_path, os.path.relpath(file_path, in_path))
-    except FileExistsError:
-        pass  # add sth like returning a phrase which is outputted by tkinter
+    # try:
+    #     with zipfile.ZipFile(file=out_path, mode='w', compression=zipfile.ZIP_DEFLATED,
+    #                          compresslevel=compression_level, strict_timestamps=False) as zipf:  
+    #         for root, folder, files in os.walk(in_path): 
+    #             for file in files:
+    #                 file_path = os.path.join(root, file)
+    #                 zipf.write(file_path, os.path.relpath(file_path, in_path))
+    # except FileExistsError:
+    #     pass  # add sth like returning a phrase which is outputted by tkinter
 
 
 
