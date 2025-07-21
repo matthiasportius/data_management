@@ -41,7 +41,6 @@ Following issues are addressed next:
 * There could be a superclass for the frames holding the `__init__`, since this should always be the same (response label to Pdf class needs to be added)
 * add option to insert pdf in existing one see [here](https://pypdf.readthedocs.io/en/stable/user/merging-pdfs.html)
 * add option to reduce size of existing pdf see [here](https://pypdf.readthedocs.io/en/stable/user/file-size.html)
-
 * add option to remove metadata of images to shrink them
 * make tkinter more beautiful
 * make it deployable / installable

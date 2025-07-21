@@ -66,8 +66,11 @@ class ZipFrame:
 
 
     def compress(self):
-        compress_data(self.folder_path, self.compression_level)
-        self.label_response["text"] = "Folder succesfully zipped."
+        file_exists = compress_data(self.folder_path, self.compression_level)
+        if file_exists:
+            self.label_response["text"] = "ZIP file already exists."
+        else:    
+            self.label_response["text"] = "Folder succesfully zipped."
 
 
     def open_zipfile(self):
@@ -82,8 +85,11 @@ class ZipFrame:
         else:
             filename = filedialog.askopenfilename()
             append_path = os.path.abspath(filename)
-            add_fileto_zip(self.zip_path, append_path, self.compression_level)
-            self.label_response["text"] = "Files succesfully added to zipfile."
+            failed = add_fileto_zip(self.zip_path, append_path, self.compression_level)
+            if failed:
+                self.label_response["text"] = "File could not be added."
+            else:
+                self.label_response["text"] = "File succesfully added to zipfile."
 
 
     def append_folderto_zip(self):
@@ -92,8 +98,11 @@ class ZipFrame:
         else:
             folderpath = filedialog.askdirectory() 
             append_path = os.path.abspath(folderpath)
-            add_folderto_zip(self.zip_path, append_path, self.compression_level)
-            self.label_response["text"] = "Folder succesfully added to zipfile."
+            failed = add_folderto_zip(self.zip_path, append_path, self.compression_level)
+            if failed:
+                self.label_response["text"] = "Folder could not be added."
+            else:
+                self.label_response["text"] = "Folder succesfully added to zipfile."
 
 
     def set_compression_level(self, val):
