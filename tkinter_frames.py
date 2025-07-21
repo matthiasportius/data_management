@@ -117,6 +117,8 @@ class PdfFrame:
         self.mainframe = ttk.Frame(notebook, padding= (45, 30, 45, 15))
         self.mainframe.grid(column=0, row=0)
         self.populate_frame(notebook, self.mainframe)
+        self.label_response = ttk.Label(self.mainframe, text="")
+        self.label_response.grid(column=0, row=5, columnspan=3, pady=(10,0))
 
     def populate_frame(self, notebook: ttk.Notebook, mainframe):
         notebook.add(mainframe, text="Merge PDFs")
@@ -131,4 +133,8 @@ class PdfFrame:
 
     def combine_pdf(self):
         files = filedialog.askopenfilenames()
-        merge_pdfs(files)
+        no_files = merge_pdfs(files)
+        if no_files:
+            self.label_response["text"] = "No files selected."
+        else: 
+            self.label_response["text"] = "PDF files succesfully merged"

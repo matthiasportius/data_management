@@ -50,8 +50,6 @@ Following issues are addressed next:
 * prevent duplicate files in zip
 * handle overwrites gracefully
 * show a progress bar
-* add more failsafe tests:
-    * isdir option in to_zip and run that if true, ...
 * option to extract zipfiles (zipfile.Zipfile.extractall(out_path))?
 * add some error handling, e.g. when user closes dialogue windows before submitting etc. (often this just crashed program)
 
