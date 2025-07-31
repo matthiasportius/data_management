@@ -11,50 +11,52 @@ ROTATION_MAP = {
 }
 
 
-def process_images(input_folder: str | os.PathLike, reduce_filesize: bool = False, reduce_quality: bool = False, 
-                   jpg_quality: int = 70, remove_metadata: bool = False) -> None:
-    supported_formats = ('.jpg', '.jpeg', '.png')
-
-    output_folder = os.path.join(os.path.dirname(input_folder), 'processed_images')
-    
+def process_images(input_files: tuple[str | os.PathLike], reduce_filesize: bool = False, reduce_quality: bool = False, 
+                   jpg_quality: int = 70, remove_metadata: bool = False, preserve_DPI: bool = False) -> None:
+    supported_formats = ('.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff', '.tif')
+    output_folder = os.path.join(os.path.dirname(input_files[0]), 'processed_images')
+    output_folder = os.path.normpath(output_folder)
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    for root, folder, files in os.walk(input_folder):
-        for file in files:
-            if file.lower().endswith(supported_formats):
-                input_path = os.path.join(root, file)
-                output_path = os.path.join(output_folder, os.path.relpath(input_path, input_folder))
-                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    for file in input_files:
+        if file.lower().endswith(supported_formats):
+            output_path = os.path.join(output_folder, os.path.relpath(file, os.path.dirname(input_files[0])))
+            output_path = os.path.normpath(output_path)
+            try:
+                img = Image.open(file)
 
-                try:
-                    img = Image.open(input_path)
+                # rotate
+                exif = img.getexif()
+                orientation = exif.get(ORIENTATION_TAG)
+                if orientation in ROTATION_MAP:
+                    angle = ROTATION_MAP[orientation]
+                    img = img.rotate(angle, expand=True)
+                
+                # retian DPI info
+                dpi = None
+                if preserve_DPI:
+                    dpi = img.info.get("dpi")
+                    if not dpi and "jpeg" in img.format.lower():
+                        exif = img.getexif()
+                        x_dpi = exif.get(282)
+                        y_dpi = exif.get(283)
+                        if x_dpi and y_dpi:
+                            dpi = (int(x_dpi), int(y_dpi))
 
-                    # rotate
-                    exif = img.getexif()
-                    orientation = exif.get(ORIENTATION_TAG)
-                    if orientation in ROTATION_MAP:
-                        angle = ROTATION_MAP[orientation]
-                        img = img.rotate(angle, expand=True)
+                save_kwargs = {}
+                if dpi:
+                    save_kwargs["dpi"] = dpi
+                if reduce_filesize:
+                    save_kwargs["optimize"] = True
+                else:
+                    save_kwargs["optimize"] = False
+                if reduce_quality and img.format == 'JPEG':
+                    save_kwargs["quality"] = jpg_quality
+                img.save(output_path, format=img.format, **save_kwargs)
 
-                    # strip metadata
-                    if remove_metadata:
-                        img_no_meta = Image.new(img.mode, img.size)
-                        img_no_meta.putdata(img.getdata())
-                        img = img_no_meta
-
-                    if reduce_filesize:
-                        img.save(output_path, format=img.format, optimize=True)
-                    if reduce_quality and img.format == 'JPEG':
-                        img.save(output_path, format=img.format, quality=jpg_quality)
-                    else:
-                        img.save(output_path, format=img.format, optimize=False)
-
-                except Exception as e:
-                    return f"Error processing {file}: {e}"
-
-# add checkbox for reduce quality or reduce filesize
-# add slider for quality reduction setting to compress images (default = 0 reduction)
-# add checkbox for metadata removal
-# add button for "Process Image"
-# add info: only for .jpg and .png
+            except Exception as e:
+                return f"Error processing {file}: {e}"
+        
+        else: 
+            return "Image format not supported."

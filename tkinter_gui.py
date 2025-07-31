@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from tkinter_frames import ZipFrame, PdfFrame
+from tkinter_frames import ZipFrame, PdfFrame, ImgFrame
 
 
 
@@ -18,6 +18,9 @@ ZipFrame(nb)
 
 # generates frame for merging pdf files:
 PdfFrame(nb)
+
+# generates frame for processing img files:
+ImgFrame(nb)
 
 
 root.mainloop()

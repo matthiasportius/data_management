@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from to_zip import compress_data, add_fileto_zip, add_folderto_zip
 from to_pdf import merge_pdfs
+from images import process_images
 
 
 
@@ -121,6 +122,7 @@ class PdfFrame:
         self.label_response = ttk.Label(self.mainframe, text="")
         self.label_response.grid(column=0, row=5, columnspan=3, pady=(10,0))
 
+
     def populate_frame(self, notebook: ttk.Notebook, mainframe):
         notebook.add(mainframe, text="Merge PDFs")
         notebook.grid(column=0, row=0)
@@ -139,3 +141,81 @@ class PdfFrame:
             self.label_response["text"] = "No files selected."
         else: 
             self.label_response["text"] = "PDF files succesfully merged"
+
+
+
+class ImgFrame:
+    def __init__(self, notebook: ttk.Notebook) -> None:
+        self.reduce_filesize = False
+        self.reduce_filesize = tk.BooleanVar(value=False)
+        self.preserve_dpi = tk.BooleanVar(value=False)
+        self.reduce_quality = tk.BooleanVar(value=False)
+        self.jpg_quality = 70
+
+
+        self.mainframe = ttk.Frame(notebook, padding= (45, 30, 45, 15))
+        self.mainframe.grid(column=0, row=0)
+        self.populate_frame(notebook, self.mainframe)
+        self.label_response = ttk.Label(self.mainframe, text="")
+        self.label_response.grid(column=0, row=5, columnspan=3, pady=(10,0))
+
+
+    def populate_frame(self, notebook: ttk.Notebook, mainframe):
+        notebook.add(mainframe, text="Process IMGs")
+        notebook.grid(column=0, row=0)
+
+        merge_label = ttk.Label(mainframe, text="Select the image files you want to process and remove metadata from.")
+        merge_label.grid(column=0, row=0)
+
+        merge_button = ttk.Button(mainframe, text="Select images", command=self.process_img)
+        merge_button.grid(column=1, row=0, padx=(10,0))
+
+        check_reduce_filesize = ttk.Checkbutton(mainframe, text='Reduce filesize?', 
+	    variable=self.reduce_filesize, onvalue=True, offvalue=False)
+        check_reduce_filesize.grid(column=1, row=1)
+
+        check_preserve_dpi = ttk.Checkbutton(mainframe, text='Preserve DPI for printing?', 
+	    variable=self.preserve_dpi, onvalue=True, offvalue=False)
+        check_preserve_dpi.grid(column=1, row=2, padx=(50,0))  
+
+        check_reduce_quality = ttk.Checkbutton(mainframe, text='Reduce .jpg quality?', 
+	    variable=self.reduce_quality, onvalue=True, offvalue=False, command=self.toggle_quality_level)
+        check_reduce_quality.grid(column=1, row=3, padx=(23,0)) 
+
+        self.quality_label = ttk.Label(mainframe, text="Quality level", width=35, anchor=tk.W)
+        self.quality_label.grid(column=0, row=4)
+        self.quality_level_slider = ttk.Scale(mainframe, from_=0, to=100, command=self.set_jpg_quality)
+        self.quality_level_slider.set(70)
+        self.quality_level_slider.grid(column=1, row=4)
+        self.quality_level_label = ttk.Label(mainframe, text=f"{self.jpg_quality}")
+        self.quality_level_label.grid(column=2, row=4)
+        self.toggle_quality_level()
+
+
+    def process_img(self):
+        filenames = filedialog.askopenfilenames(filetypes=[("Image files", "*.jpg *.jpeg *.png *.webp *.bmp *.tiff *.tif"),
+                                                          ("JPEG files", "*.jpg *.jpeg"),
+                                                          ("PNG files", "*.png"),])
+        if not filenames:
+            self.label_response["text"] = "No image files selected."
+        else:
+            error = process_images(input_files=filenames, reduce_filesize=self.reduce_filesize.get(),
+                                reduce_quality=self.reduce_quality.get(), jpg_quality=self.jpg_quality,
+                                preserve_DPI=self.preserve_dpi.get())
+            if error:
+                self.label_response["text"] = f"{error}"
+            else:
+                self.label_response["text"] = "Image files succesfully processed"
+
+
+    def toggle_quality_level(self):
+        state = 'normal' if self.reduce_quality.get() else 'disabled'
+        self.quality_label.configure(state=state)
+        self.quality_level_slider.configure(state=state)
+        self.quality_level_label.configure(state=state)
+
+
+    def set_jpg_quality(self, val):
+        self.jpg_quality = int(float(val))
+        if hasattr(self, 'quality_level_label'):
+            self.quality_level_label.config(text=f"{self.jpg_quality}")

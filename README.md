@@ -44,7 +44,8 @@ Adds a file to an existing zip file. First checks if the given path is a valid z
 
 The 'Orientation' tag tells how to properly rotate image before viewing. Therefore it is better retain that info. Because of that I rotate images before removing that tag. The `ORIENTATION_TAG` value of 274 represents the EXIF 'Orientation' tag mapped to an int. This is a standardized value. However, to dynamically get the int representation of the EXIF tag one could use: `next((k for k, v in ExifTags.TAGS.items() if v == 'Orientation'), None)` (in the very unlikely case that the tag number ever changes this would still work). Since PIL's `rotate()` rotates CCW the values of `ROTATION_MAP` are e.g. 6: 270° CCW = 90° CW which again fits the EXIF tag standard values.
 `img.getdata()` copies only pixel data, so any metadata or tags are not transferred this way. By not passing any info to the save parameter like `exif=img.info['exif']` the metadata is lost.
-
+By loosing the metadata, also the DPI info is lost. If there is no DPI info, the pillow library often assigns a DPI of 96 by default. For .tif files it is often retained when using pilow. If the user wants to explicitly retain the info, an option for that was added.
+When not passing metadata to the `save` function, it is automatically omitted and therefore deleted in the new file. Retaining or finding specific metadata however is more difficult, since for different file formats, the metadata is also stored different. While .jpg files metadata can often be accessed via `img.info`, .png files store metadata in text chunks and so on.
 
 ## tkinter_frames.py
 
@@ -68,8 +69,7 @@ Following issues are addressed next:
 * make buttons like compress unselectable if no folder was selected before (unselectable = default; if file: selectable)
 
 * next: 
-    1. add new window to GUI with "Images" and its buttons etc.
-    2. finish remove metadata from pdfs (+ add it to to_pdf.py + add GUI options for it)
+    2. finish remove metadata from pdfs (+ add it to to_pdf.py as option during merge + add GUI checkbox for it)
     3. For 'Select folder' and 'Select zipfile' if action cancelled dont show anything (now it shows: folder data_management selected)
     4. add typing to tkinter_frames
     5. make it deployable / installable
