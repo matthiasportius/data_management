@@ -69,7 +69,5 @@ Following issues are addressed next:
 * make buttons like compress unselectable if no folder was selected before (unselectable = default; if file: selectable)
 
 * next: 
-    2. finish remove metadata from pdfs (+ add it to to_pdf.py as option during merge + add GUI checkbox for it)
-    3. For 'Select folder' and 'Select zipfile' if action cancelled dont show anything (now it shows: folder data_management selected)
     4. add typing to tkinter_frames
     5. make it deployable / installable

@@ -59,9 +59,12 @@ class ZipFrame:
         
 
     def open_folder(self):
-        folderpath = filedialog.askdirectory() 
-        self.folder_path = os.path.abspath(folderpath)
-        self.label_response["text"] = f"Folder {os.path.split(self.folder_path)[1]} selected. Press Compress to zip."
+        folderpath = filedialog.askdirectory()
+        if not folderpath:
+            self.label_response["text"] = "No folder selected."
+        else: 
+            self.folder_path = os.path.abspath(folderpath)
+            self.label_response["text"] = f"Folder {os.path.split(self.folder_path)[1]} selected. Press Compress to zip."
 
 
     def compress(self):
@@ -77,8 +80,11 @@ class ZipFrame:
 
     def open_zipfile(self):
         filename = filedialog.askopenfilename(filetypes=[("ZIP files", "*.zip")])
-        self.zip_path = os.path.abspath(filename)
-        self.label_response["text"] = f"Zipfile {os.path.split(self.zip_path)[1]} selected. Press Add to select you additions."
+        if not filename:
+            self.label_response["text"] = "No zipfile selected."
+        else:
+            self.zip_path = os.path.abspath(filename)
+            self.label_response["text"] = f"Zipfile {os.path.split(self.zip_path)[1]} selected. Press Add to select you additions."
 
 
     def append_fileto_zip(self):
