@@ -21,7 +21,7 @@ class ZipFrame:
         self.label_response.grid(column=0, row=5, columnspan=3, pady=(10,0))
 
 
-    def populate_frame(self, notebook: ttk.Notebook, mainframe):
+    def populate_frame(self, notebook: ttk.Notebook, mainframe: ttk.Frame) -> None:
         notebook.add(mainframe, text="Zip Data")
         notebook.grid(column=0, row=0)
 
@@ -58,7 +58,7 @@ class ZipFrame:
         self.compression_level_label.grid(column=2, row=4)
         
 
-    def open_folder(self):
+    def open_folder(self) -> None:
         folderpath = filedialog.askdirectory()
         if not folderpath:
             self.label_response["text"] = "No folder selected."
@@ -67,7 +67,7 @@ class ZipFrame:
             self.label_response["text"] = f"Folder {os.path.split(self.folder_path)[1]} selected. Press Compress to zip."
 
 
-    def compress(self):
+    def compress(self) -> None:
         if not self.folder_path:
             self.label_response["text"] = "No folder selected."
         else:
@@ -78,7 +78,7 @@ class ZipFrame:
                 self.label_response["text"] = "Folder succesfully zipped."
 
 
-    def open_zipfile(self):
+    def open_zipfile(self) -> None:
         filename = filedialog.askopenfilename(filetypes=[("ZIP files", "*.zip")])
         if not filename:
             self.label_response["text"] = "No zipfile selected."
@@ -87,7 +87,7 @@ class ZipFrame:
             self.label_response["text"] = f"Zipfile {os.path.split(self.zip_path)[1]} selected. Press Add to select you additions."
 
 
-    def append_fileto_zip(self):
+    def append_fileto_zip(self) -> None:
         if not self.zip_path:
             self.label_response["text"] = "No zipfile selected"
         else:
@@ -100,7 +100,7 @@ class ZipFrame:
                 self.label_response["text"] = "File succesfully added to zipfile."
 
 
-    def append_folderto_zip(self):
+    def append_folderto_zip(self) -> None:
         if not self.zip_path:
             self.label_response["text"] = "No zipfile selected"
         else:
@@ -113,7 +113,7 @@ class ZipFrame:
                 self.label_response["text"] = "Folder succesfully added to zipfile."
 
 
-    def set_compression_level(self, val):
+    def set_compression_level(self, val: str) -> None:
         self.compression_level = int(float(val))
         if hasattr(self, 'compression_level_label'):
             self.compression_level_label.config(text=f"{self.compression_level}")
@@ -129,7 +129,7 @@ class PdfFrame:
         self.label_response.grid(column=0, row=5, columnspan=3, pady=(10,0))
 
 
-    def populate_frame(self, notebook: ttk.Notebook, mainframe):
+    def populate_frame(self, notebook: ttk.Notebook, mainframe: ttk.Frame) -> None:
         notebook.add(mainframe, text="Merge PDFs")
         notebook.grid(column=0, row=0)
 
@@ -140,7 +140,7 @@ class PdfFrame:
         merge_button.grid(column=1, row=0, padx=(10,0))
 
 
-    def combine_pdf(self):
+    def combine_pdf(self) -> None:
         files = filedialog.askopenfilenames()
         no_files = merge_pdfs(files)
         if no_files:
@@ -166,7 +166,7 @@ class ImgFrame:
         self.label_response.grid(column=0, row=5, columnspan=3, pady=(10,0))
 
 
-    def populate_frame(self, notebook: ttk.Notebook, mainframe):
+    def populate_frame(self, notebook: ttk.Notebook, mainframe: ttk.Frame) -> None:
         notebook.add(mainframe, text="Process IMGs")
         notebook.grid(column=0, row=0)
 
@@ -198,7 +198,7 @@ class ImgFrame:
         self.toggle_quality_level()
 
 
-    def process_img(self):
+    def process_img(self) -> None:
         filenames = filedialog.askopenfilenames(filetypes=[("Image files", "*.jpg *.jpeg *.png *.webp *.bmp *.tiff *.tif"),
                                                           ("JPEG files", "*.jpg *.jpeg"),
                                                           ("PNG files", "*.png"),])
@@ -214,14 +214,14 @@ class ImgFrame:
                 self.label_response["text"] = "Image files succesfully processed"
 
 
-    def toggle_quality_level(self):
+    def toggle_quality_level(self) -> None:
         state = 'normal' if self.reduce_quality.get() else 'disabled'
         self.quality_label.configure(state=state)
         self.quality_level_slider.configure(state=state)
         self.quality_level_label.configure(state=state)
 
 
-    def set_jpg_quality(self, val):
+    def set_jpg_quality(self, val: str) -> None:
         self.jpg_quality = int(float(val))
         if hasattr(self, 'quality_level_label'):
             self.quality_level_label.config(text=f"{self.jpg_quality}")

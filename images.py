@@ -12,7 +12,7 @@ ROTATION_MAP = {
 
 
 def process_images(input_files: tuple[str | os.PathLike], reduce_filesize: bool = False, reduce_quality: bool = False, 
-                   jpg_quality: int = 70, remove_metadata: bool = False, preserve_DPI: bool = False) -> None:
+                   jpg_quality: int = 70, preserve_DPI: bool = False) -> None | str:
     supported_formats = ('.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff', '.tif')
     output_folder = os.path.join(os.path.dirname(input_files[0]), 'processed_images')
     output_folder = os.path.normpath(output_folder)

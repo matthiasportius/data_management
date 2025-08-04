@@ -69,5 +69,4 @@ Following issues are addressed next:
 * make buttons like compress unselectable if no folder was selected before (unselectable = default; if file: selectable)
 
 * next: 
-    4. add typing to tkinter_frames
     5. make it deployable / installable
