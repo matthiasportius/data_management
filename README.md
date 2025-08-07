@@ -19,7 +19,8 @@ Although size reduction from removing this data is sometimes minimal, the privac
 
 ## Usage
 
-Run the tkinter_gui.py file and use the GUI for everything else.
+Download the repository, run the tkinter_gui.py file and use the GUI for everything else.
+Or simply download and run the released .exe file.
 
 ## Documentation
 
